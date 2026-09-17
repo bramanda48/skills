@@ -1,9 +1,6 @@
 {
   "recommendations": [
     "dbaeumer.vscode-eslint",
-    "antfu.iconify",
-    "antfu.unocss",
-    "antfu.slidev",
     "vue.volar"
   ]
 }
