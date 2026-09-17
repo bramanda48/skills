@@ -34,6 +34,7 @@ Manually maintained by me with his preferred tools, setup conventions, and best 
 |-------|-------------|
 | [os-awareness](skills/os-awareness) | Detect the user's OS and use the correct CLI tools, shell commands, and path conventions for that platform |
 | [conventional-commits](skills/conventional-commits) | Format commit messages using the Conventional Commits specification for automated changelogs and semantic versioning |
+| [github-cli](skills/github-cli) | Interact with GitHub via the `gh` CLI — repos, GitHub Actions, issues, PRs, releases |
 | [shadcn-vue](skills/shadcn-vue) | Manage shadcn-vue components and projects — adding, searching, fixing, debugging, styling, and composing UI |
 
 ### Skills Generated from Official Documentation

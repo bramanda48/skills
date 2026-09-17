@@ -82,6 +82,7 @@ export const vendors: Record<string, VendorSkillMeta> = {
  */
 export const manual = [
   'conventional-commits',
+  'github-cli',
   'os-awareness',
   'shadcn-vue',
 ]
