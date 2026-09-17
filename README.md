@@ -34,6 +34,7 @@ Manually maintained by me with his preferred tools, setup conventions, and best 
 |-------|-------------|
 | [os-awareness](skills/os-awareness) | Detect the user's OS and use the correct CLI tools, shell commands, and path conventions for that platform |
 | [conventional-commits](skills/conventional-commits) | Format commit messages using the Conventional Commits specification for automated changelogs and semantic versioning |
+| [shadcn-vue](skills/shadcn-vue) | Manage shadcn-vue components and projects — adding, searching, fixing, debugging, styling, and composing UI |
 
 ### Skills Generated from Official Documentation
 
@@ -71,6 +72,10 @@ Synced from external repositories that maintain their own skills.
 | [vue-best-practices](skills/vue-best-practices) | Vue 3 + TypeScript best practices | [vuejs-ai/skills](https://github.com/vuejs-ai/skills) |
 | [vue-router-best-practices](skills/vue-router-best-practices) | Vue Router best practices | [vuejs-ai/skills](https://github.com/vuejs-ai/skills) |
 | [vue-testing-best-practices](skills/vue-testing-best-practices) | Vue testing best practices | [vuejs-ai/skills](https://github.com/vuejs-ai/skills) |
+| [cloudflare](skills/cloudflare) (Official) | Discover and choose Cloudflare products for apps, APIs, AI agents, storage, networking, and security | [cloudflare/skills](https://github.com/cloudflare/skills) |
+| [cloudflare-agents-sdk](skills/cloudflare-agents-sdk) (Official) | Build, debug, or review Cloudflare Agents SDK applications using the agents package | [cloudflare/skills](https://github.com/cloudflare/skills) |
+| [cloudflare-workers-best-practices](skills/cloudflare-workers-best-practices) (Official) | Cloudflare Workers best practices for production applications | [cloudflare/skills](https://github.com/cloudflare/skills) |
+| [cloudflare-wrangler](skills/cloudflare-wrangler) (Official) | Run or troubleshoot Wrangler CLI commands and configure Worker projects | [cloudflare/skills](https://github.com/cloudflare/skills) |
 
 ## Generate Your Own Skills
 
