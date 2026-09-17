@@ -1,0 +1,3 @@
+- Prefer the `iconify-icon` web component (`iconify-icon` / `@iconify-icon/react` / `@iconify-icon/solid`) over the deprecated native `@iconify/{react,vue,svelte}` components.
+- Prefer ESM over CJS.
+- For offline/bundled icons, prefer `@iconify-json/{prefix}` per-set packages over the full `@iconify/json` for tree-shaking.

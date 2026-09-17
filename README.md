@@ -1,6 +1,6 @@
-# Anthony Fu's Skills
+# My Collection Skills
 
-A curated collection of [Agent Skills](https://agentskills.io/home) reflecting [Anthony Fu](https://github.com/antfu)'s preferences, experience, and best practices, along with usage documentation for the tools.
+A curated collection of [Agent Skills](https://agentskills.io/home) based on [Anthony Fu's skills collection](https://github.com/antfu/skills), extended with additional skills reflecting [BRAM](https://github.com/bramanda48)'s preferences, experience, and best practices for web development.
 
 > [!IMPORTANT]
 > This is a proof-of-concept project for generating agent skills from source documentation and keeping them in sync.
@@ -22,18 +22,18 @@ Learn more about the CLI usage at [skills](https://github.com/vercel-labs/skills
 
 ## Skills
 
-This collection is aim to be a one-stop collection of you are mainly working on Vite/Nuxt. It includes skills from different sources with different scopes.
+This collection is aim to be a one-stop collection. It includes skills from different sources with different scopes.
 
 ### Hand-maintained Skills
 
 > Opinionated
 
-Manually maintained by Anthony Fu with his preferred tools, setup conventions, and best practices.
+Manually maintained by me with his preferred tools, setup conventions, and best practices.
 
 | Skill | Description |
 |-------|-------------|
-| [antfu](skills/antfu) | Anthony Fu's preferences and best practices for app/library projects (eslint, pnpm, vitest, vue, etc.) |
-| [antfu-design](skills/antfu-design) | UnoCSS-centered design principles, semantic tokens, and UI presentation patterns from Anthony Fu's tooling UIs |
+| [os-awareness](skills/os-awareness) | Detect the user's OS and use the correct CLI tools, shell commands, and path conventions for that platform |
+| [conventional-commits](skills/conventional-commits) | Format commit messages using the Conventional Commits specification for automated changelogs and semantic versioning |
 
 ### Skills Generated from Official Documentation
 
@@ -49,8 +49,9 @@ Generated from official documentation and fine-tuned by Anthony.
 | [vite](skills/vite) | Vite build tool - config, plugins, SSR, library mode | [vitejs/vite](https://github.com/vitejs/vite) |
 | [vitepress](skills/vitepress) | VitePress - static site generator powered by Vite | [vuejs/vitepress](https://github.com/vuejs/vitepress) |
 | [vitest](skills/vitest) | Vitest - unit testing framework powered by Vite | [vitest-dev/vitest](https://github.com/vitest-dev/vitest) |
-| [unocss](skills/unocss) | UnoCSS - atomic CSS engine, presets, transformers | [unocss/unocss](https://github.com/unocss/unocss) |
-| [pnpm](skills/pnpm) | pnpm - fast, disk space efficient package manager | [pnpm/pnpm.io](https://github.com/pnpm/pnpm.io) |
+| [iconify](skills/iconify) | Iconify icon framework — web component, customisations, color modes, offline usage, Tailwind | [iconify/iconify](https://github.com/iconify/iconify) |
+| [hono](skills/hono) | Hono — small, ultrafast web framework on Web Standards for HTTP APIs, edge functions, and multi-runtime apps | [honojs/hono](https://github.com/honojs/hono) |
+| [hono-third-party](skills/hono-third-party) | Third-party @hono/* middleware — validators, auth, observability, renderers, OpenAPI tooling | [honojs/middleware](https://github.com/honojs/middleware) |
 
 ### Vendored Skills
 
@@ -58,14 +59,18 @@ Synced from external repositories that maintain their own skills.
 
 | Skill | Description | Source |
 |-------|-------------|--------|
-| [slidev](skills/slidev) (Official) | Slidev - presentation slides for developers | [slidevjs/slidev](https://github.com/slidevjs/slidev) |
+| [antislop](skills/antislop) (Official) | Anti Slop core — rules for AI coding agents to stop generic AI slop | [miqdadbadjuber/anti-slop](https://github.com/miqdadbadjuber/anti-slop) |
+| [antislop-ui](skills/antislop-ui) (Official) | UI/visual — color, layout, components, motion for interfaces | [miqdadbadjuber/anti-slop](https://github.com/miqdadbadjuber/anti-slop) |
+| [antislop-copywriting](skills/antislop-copywriting) (Official) | Copy & text — headlines, tone, CTAs, anti-AI-writing patterns | [miqdadbadjuber/anti-slop](https://github.com/miqdadbadjuber/anti-slop) |
+| [antislop-human](skills/antislop-human) (Official) | Human & accessibility — contrast, keyboard, focus, states | [miqdadbadjuber/anti-slop](https://github.com/miqdadbadjuber/anti-slop) |
+| [antislop-layoutmobile](skills/antislop-layoutmobile) (Official) | Mobile/responsive — grids, overflow, tap targets across screen sizes | [miqdadbadjuber/anti-slop](https://github.com/miqdadbadjuber/anti-slop) |
+| [antislop-code](skills/antislop-code) (Official) | Code comments — remove AI-slop comments, keep valuable ones, never touch code | [miqdadbadjuber/anti-slop](https://github.com/miqdadbadjuber/anti-slop) |
 | [tsdown](skills/tsdown) (Official) | tsdown - TypeScript library bundler powered by Rolldown | [rolldown/tsdown](https://github.com/rolldown/tsdown) |
 | [turborepo](skills/turborepo) (Official) | Turborepo - high-performance build system for monorepos | [vercel/turborepo](https://github.com/vercel/turborepo) |
 | [vueuse-functions](skills/vueuse-functions) (Official) | VueUse - 200+ Vue composition utilities | [vueuse/skills](https://github.com/vueuse/skills) |
 | [vue-best-practices](skills/vue-best-practices) | Vue 3 + TypeScript best practices | [vuejs-ai/skills](https://github.com/vuejs-ai/skills) |
 | [vue-router-best-practices](skills/vue-router-best-practices) | Vue Router best practices | [vuejs-ai/skills](https://github.com/vuejs-ai/skills) |
 | [vue-testing-best-practices](skills/vue-testing-best-practices) | Vue testing best practices | [vuejs-ai/skills](https://github.com/vuejs-ai/skills) |
-| [web-design-guidelines](skills/web-design-guidelines) | Web design guidelines for building beautiful interfaces | [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills) |
 
 ## Generate Your Own Skills
 
