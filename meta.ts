@@ -65,6 +65,16 @@ export const vendors: Record<string, VendorSkillMeta> = {
       turborepo: 'turborepo',
     },
   },
+  'cloudflare': {
+    official: true,
+    source: 'https://github.com/cloudflare/skills',
+    skills: {
+      'cloudflare': 'cloudflare',
+      'agents-sdk': 'cloudflare-agents-sdk',
+      'workers-best-practices': 'cloudflare-workers-best-practices',
+      'wrangler': 'cloudflare-wrangler',
+    },
+  },
 }
 
 /**

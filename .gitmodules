@@ -40,3 +40,6 @@
 [submodule "vendor/antislop"]
 	path = vendor/antislop
 	url = https://github.com/miqdadbadjuber/anti-slop
+[submodule "vendor/cloudflare"]
+	path = vendor/cloudflare
+	url = https://github.com/cloudflare/skills
