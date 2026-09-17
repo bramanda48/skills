@@ -2,9 +2,9 @@
 name: hono-third-party
 description: Third-party middleware for Hono published under the @hono scope — validators, auth, observability, servers, renderers, OpenAPI tooling, transpilers, and utilities. Use when integrating @hono/* packages into a Hono app.
 metadata:
-  author: Anthony Fu
+  author: BRAM
   version: "2026.9.17"
-  source: Generated from https://github.com/honojs/middleware, scripts located at https://github.com/antfu/skills
+  source: Generated from https://github.com/honojs/middleware, scripts located at https://github.com/bramanda48/skills
 ---
 
 Third-party middleware for Hono is maintained in the `github.com/honojs/middleware` monorepo and published to npm under the `@hono` scope (e.g. `@hono/zod-validator`). Each package wraps or extends Hono with a specific integration — schema validators, authentication providers, observability, GraphQL/tRPC servers, SSR renderers, OpenAPI tooling, and more. Install with `npm i @hono/<name>` and import from `@hono/<name>`.

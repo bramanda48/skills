@@ -145,9 +145,9 @@ Also record the version of the tool/project when the skills were generated.
 name: {name}
 description: {description}
 metadata:
-  author: Anthony Fu
+  author: BRAM
   version: "2026.1.1"
-  source: Generated from {source-url}, scripts located at https://github.com/antfu/skills
+  source: Generated from {source-url}, scripts located at https://github.com/bramanda48/skills
 ---
 
 > The skill is based on {project} v{version}, generated at {date}.

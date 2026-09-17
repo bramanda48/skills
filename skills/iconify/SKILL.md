@@ -2,9 +2,9 @@
 name: iconify
 description: Iconify icon framework — web component, customisations, color modes, offline usage, data format, API providers, and Tailwind. Use when rendering icons via `iconify-icon`, `@iconify-icon/react|solid`, bundling icon data offline, or using `@iconify/utils`.
 metadata:
-  author: Anthony Fu
+  author: BRAM
   version: "2026.9.17"
-  source: Generated from https://github.com/iconify/iconify, scripts located at https://github.com/antfu/skills
+  source: Generated from https://github.com/iconify/iconify, scripts located at https://github.com/bramanda48/skills
 ---
 
 # Iconify

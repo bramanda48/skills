@@ -2,9 +2,9 @@
 name: hono
 description: Hono — a small, simple, ultrafast web framework built on Web Standards. Use when building HTTP APIs, edge functions, or server apps with Hono, including routing, middleware, context, JSX, RPC, validation, and multi-runtime deployment.
 metadata:
-  author: Anthony Fu
+  author: BRAM
   version: "2026.9.17"
-  source: Generated from https://github.com/honojs/hono, scripts located at https://github.com/antfu/skills
+  source: Generated from https://github.com/honojs/hono, scripts located at https://github.com/bramanda48/skills
 ---
 
 Hono is a small, simple, and ultrafast web framework built on Web Standards. It works on any JavaScript runtime — Cloudflare Workers, Fastly Compute, Deno, Bun, Vercel, AWS Lambda, Lambda@Edge, and Node.js — with the same code. It is zero-dependency, has first-class TypeScript support, and ships built-in middleware, helpers, and a type-safe RPC client.
