@@ -1,5 +1,5 @@
 ---
-name: agents-sdk
+name: cloudflare-agents-sdk
 description: Build, debug, or review Cloudflare Agents SDK applications using the agents package.
 ---
 

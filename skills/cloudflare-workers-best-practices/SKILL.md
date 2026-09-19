@@ -1,5 +1,5 @@
 ---
-name: workers-best-practices
+name: cloudflare-workers-best-practices
 description: Cloudflare Workers best practices for production applications. Use when writing, reviewing, or configuring Workers.
 ---
 
