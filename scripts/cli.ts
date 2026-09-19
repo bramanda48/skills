@@ -35,6 +35,8 @@ function submoduleExists(path: string): boolean {
 }
 
 const RE_SUBMODULE_PATH = /path\s*=\s*(.+)/g
+const RE_FRONTMATTER = /^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/
+const RE_FRONTMATTER_NAME = /^name\s*:.*$/m
 
 function getExistingSubmodulePaths(): string[] {
   const gitmodules = join(root, '.gitmodules')
@@ -175,6 +177,24 @@ async function initSubmodules(skipPrompt = false) {
   }
 }
 
+function updateSkillFrontmatterName(skillFilePath: string, outputSkillName: string): void {
+  if (!existsSync(skillFilePath))
+    return
+  const content = readFileSync(skillFilePath, 'utf-8')
+  const match = content.match(RE_FRONTMATTER)
+  if (!match)
+    return
+  const frontmatter = match[1]
+  const updatedFrontmatter = RE_FRONTMATTER_NAME.test(frontmatter)
+    ? frontmatter.replace(RE_FRONTMATTER_NAME, `name: ${outputSkillName}`)
+    : `name: ${outputSkillName}\n${frontmatter}`
+  if (updatedFrontmatter === frontmatter)
+    return
+  const start = content.indexOf(frontmatter)
+  const updated = content.slice(0, start) + updatedFrontmatter + content.slice(start + frontmatter.length)
+  writeFileSync(skillFilePath, updated)
+}
+
 async function syncSubmodules() {
   const spinner = p.spinner()
 
@@ -240,6 +260,11 @@ async function syncSubmodules() {
 
           cpSync(fullPath, destPath)
         }
+      }
+
+      // Update output SKILL.md frontmatter name when renamed (frontmatter only, body untouched)
+      if (sourceSkillName !== outputSkillName) {
+        updateSkillFrontmatterName(join(outputPath, 'SKILL.md'), outputSkillName)
       }
 
       // Copy LICENSE file from vendor repo root if it exists
