@@ -10,7 +10,6 @@ export interface VendorSkillMeta {
  */
 export const submodules = {
   'vue': 'https://github.com/vuejs/docs',
-  'nuxt': 'https://github.com/nuxt/nuxt',
   'vite': 'https://github.com/vitejs/vite',
   'pinia': 'https://github.com/vuejs/pinia',
   'vitest': 'https://github.com/vitest-dev/vitest',
@@ -83,6 +82,7 @@ export const vendors: Record<string, VendorSkillMeta> = {
 export const manual = [
   'conventional-commits',
   'github-cli',
+  'github-flow-branching',
   'os-awareness',
   'shadcn-vue',
 ]
