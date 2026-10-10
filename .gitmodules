@@ -40,3 +40,6 @@
 [submodule "vendor/cloudflare"]
 	path = vendor/cloudflare
 	url = https://github.com/cloudflare/skills
+[submodule "vendor/context7"]
+	path = vendor/context7
+	url = https://github.com/upstash/context7

@@ -36,6 +36,8 @@ Manually maintained by me with his preferred tools, setup conventions, and best 
 | [conventional-commits](skills/conventional-commits) | Format commit messages using the Conventional Commits specification for automated changelogs and semantic versioning |
 | [github-cli](skills/github-cli) | Interact with GitHub via the `gh` CLI — repos, GitHub Actions, issues, PRs, releases |
 | [shadcn-vue](skills/shadcn-vue) | Manage shadcn-vue components and projects — adding, searching, fixing, debugging, styling, and composing UI |
+| [github-flow-branching](skills/github-flow-branching) | GitHub Flow branching strategy — branches, commits, PRs, and merges |
+| [uteke-memory](skills/uteke-memory) | Persistent memory via uteke MCP tools — remember and recall past context |
 
 ### Skills Generated from Official Documentation
 
@@ -46,7 +48,6 @@ Generated from official documentation and fine-tuned by Anthony.
 | Skill | Description | Source |
 |-------|-------------|--------|
 | [vue](skills/vue) | Vue.js core - reactivity, components, composition API | [vuejs/docs](https://github.com/vuejs/docs) |
-| [nuxt](skills/nuxt) | Nuxt framework - file-based routing, server routes, modules | [nuxt/nuxt](https://github.com/nuxt/nuxt) |
 | [pinia](skills/pinia) | Pinia - intuitive, type-safe state management for Vue | [vuejs/pinia](https://github.com/vuejs/pinia) |
 | [vite](skills/vite) | Vite build tool - config, plugins, SSR, library mode | [vitejs/vite](https://github.com/vitejs/vite) |
 | [vitepress](skills/vitepress) | VitePress - static site generator powered by Vite | [vuejs/vitepress](https://github.com/vuejs/vitepress) |
@@ -69,7 +70,7 @@ Synced from external repositories that maintain their own skills.
 | [antislop-code](skills/antislop-code) (Official) | Code comments — remove AI-slop comments, keep valuable ones, never touch code | [miqdadbadjuber/anti-slop](https://github.com/miqdadbadjuber/anti-slop) |
 | [tsdown](skills/tsdown) (Official) | tsdown - TypeScript library bundler powered by Rolldown | [rolldown/tsdown](https://github.com/rolldown/tsdown) |
 | [turborepo](skills/turborepo) (Official) | Turborepo - high-performance build system for monorepos | [vercel/turborepo](https://github.com/vercel/turborepo) |
-| [vueuse-functions](skills/vueuse-functions) (Official) | VueUse - 200+ Vue composition utilities | [vueuse/skills](https://github.com/vueuse/skills) |
+| [vueuse-functions](skills/vueuse-functions) (Official) | VueUse - 200+ Vue composition utilities | [vueuse/vueuse](https://github.com/vueuse/vueuse) |
 | [vue-best-practices](skills/vue-best-practices) | Vue 3 + TypeScript best practices | [vuejs-ai/skills](https://github.com/vuejs-ai/skills) |
 | [vue-router-best-practices](skills/vue-router-best-practices) | Vue Router best practices | [vuejs-ai/skills](https://github.com/vuejs-ai/skills) |
 | [vue-testing-best-practices](skills/vue-testing-best-practices) | Vue testing best practices | [vuejs-ai/skills](https://github.com/vuejs-ai/skills) |
@@ -77,6 +78,7 @@ Synced from external repositories that maintain their own skills.
 | [cloudflare-agents-sdk](skills/cloudflare-agents-sdk) (Official) | Build, debug, or review Cloudflare Agents SDK applications using the agents package | [cloudflare/skills](https://github.com/cloudflare/skills) |
 | [cloudflare-workers-best-practices](skills/cloudflare-workers-best-practices) (Official) | Cloudflare Workers best practices for production applications | [cloudflare/skills](https://github.com/cloudflare/skills) |
 | [cloudflare-wrangler](skills/cloudflare-wrangler) (Official) | Run or troubleshoot Wrangler CLI commands and configure Worker projects | [cloudflare/skills](https://github.com/cloudflare/skills) |
+| [context7](skills/context7) (Official) | Fetch current library and framework docs with code examples via Context7 | [upstash/context7](https://github.com/upstash/context7) |
 
 ## Generate Your Own Skills
 

@@ -74,6 +74,13 @@ export const vendors: Record<string, VendorSkillMeta> = {
       'wrangler': 'cloudflare-wrangler',
     },
   },
+  'context7': {
+    official: true,
+    source: 'https://github.com/upstash/context7',
+    skills: {
+      'context7-mcp': 'context7',
+    },
+  },
 }
 
 /**
@@ -85,4 +92,5 @@ export const manual = [
   'github-flow-branching',
   'os-awareness',
   'shadcn-vue',
+  'uteke-memory',
 ]
