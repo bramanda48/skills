@@ -90,6 +90,7 @@ export const manual = [
   'conventional-commits',
   'github-cli',
   'github-flow-branching',
+  'github-projectflow',
   'os-awareness',
   'shadcn-vue',
   'uteke-memory',

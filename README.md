@@ -37,6 +37,7 @@ Manually maintained by me with his preferred tools, setup conventions, and best 
 | [github-cli](skills/github-cli) | Interact with GitHub via the `gh` CLI — repos, GitHub Actions, issues, PRs, releases |
 | [shadcn-vue](skills/shadcn-vue) | Manage shadcn-vue components and projects — adding, searching, fixing, debugging, styling, and composing UI |
 | [github-flow-branching](skills/github-flow-branching) | GitHub Flow branching strategy — branches, commits, PRs, and merges |
+| [github-projectflow](skills/github-projectflow) | Manage vibe-coding workflow via GitHub Project — ideas, plans, tasks, board status, checkpoints |
 | [uteke-memory](skills/uteke-memory) | Persistent memory via uteke MCP tools — remember and recall past context |
 
 ### Skills Generated from Official Documentation
