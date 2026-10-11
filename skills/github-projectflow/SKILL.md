@@ -82,7 +82,7 @@ Run `scripts/detect-board.py` first, then follow the case that matches:
 
 1. **No board and no `.github/projectflow.json`** → `detect-board.py` finds no board → ask the user for the board name → `create-board.py --title "<name>"` → `create-status.py`.
 2. **Board exists and `.github/projectflow.json` exists** → `detect-board.py` confirms the board → done, nothing to create.
-3. **`.github/projectflow.json` exists but the board no longer exists online** (`detect-board.py` warns about it) → delete the current `.github/projectflow.json` and run the setup again as in case 1.
+3. **`.github/projectflow.json` exists but the board is gone or no longer linked to this repo** (`detect-board.py` warns about it) → delete the current `.github/projectflow.json` and run the setup again as in case 1.
 
 ### 1. `scripts/detect-board.py` — detect repo & boards
 
@@ -90,18 +90,18 @@ Run `scripts/detect-board.py` first, then follow the case that matches:
 python3 scripts/detect-board.py
 ```
 
-JSON output: `owner`, `repo`, `is_org`, `config` (contents of `.github/projectflow.json` if present — this is the **canonical board** for this repo), and a list of `projects` (number, title, shortDescription, url).
+JSON output: `owner`, `repo`, `is_org`, `config` (contents of `.github/projectflow.json` if present — this is the **canonical board** for this repo), and a list of `projects` — only the boards **linked to this repo** (number, title, shortDescription, url).
 
-### 2. `scripts/create-board.py` — create/set up the board (idempotent)
+### 2. `scripts/create-board.py` — create/set up the board
 
 ```bash
-python3 scripts/create-board.py --title "My Board"   # create (or reuse) a board by name
+python3 scripts/create-board.py --title "My Board"   # always creates a new board
 python3 scripts/create-board.py --number 3           # use an existing board
 ```
 
 **There is no default board name.** During `projectflow: setup`, always ask the user what the board should be called (or whether to use an existing one) before running this script. `--title` is required unless `--number` is given.
 
-Does: create Project v2 (skip if exists) → set **short description** + **board README** → link the repo → ensure the Status field is complete (existing options are preserved) → write `.github/projectflow.json` (`owner` + `project_number`) to the repo (creating `.github/` if needed), marking this board as canonical. Idempotent.
+Does: create a new Project v2 (no check for existing boards with the same name) → set **short description** + **board README** → link the repo → ensure the Status field is complete (existing options are preserved) → write `.github/projectflow.json` (`owner` + `project_number`) to the repo (creating `.github/` if needed), marking this board as canonical.
 
 Known limitation: views cannot be created through the GitHub API. If a kanban view grouped by Status is wanted, add it once in the GitHub UI. The board title is intentionally not stored — it can be renamed freely.
 

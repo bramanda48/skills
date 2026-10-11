@@ -63,20 +63,21 @@ def _scope(is_org):
     return "organization" if is_org else "user"
 
 
-def list_projects(owner, is_org):
-    """List all Project v2 boards of the owner (paginated)."""
-    scope = _scope(is_org)
-    q = ("query($o:String!,$after:String){ " + scope + "(login:$o){ "
+def _paginate_projects(var_decl, root_selector, root_key, variables):
+    """Page through projectsV2 under a GraphQL root (user/organization/repository)."""
+    q = ("query(" + var_decl + ",$after:String){ " + root_selector + "{ "
          "projectsV2(first:50, after:$after){ pageInfo{ hasNextPage endCursor } "
          "nodes{ number title shortDescription url } } } }")
     nodes, after = [], None
     while True:
-        args = ["api", "graphql", "-f", f"query={q}", "-f", f"o={owner}"]
+        args = ["api", "graphql", "-f", f"query={q}"]
+        for k, v in variables.items():
+            args += ["-f", f"{k}={v}"]
         if after:
             args += ["-f", f"after={after}"]
         data = gh_json(*args)
         try:
-            page = data["data"][scope]["projectsV2"]
+            page = data["data"][root_key]["projectsV2"]
         except (KeyError, TypeError):
             break
         nodes += [n for n in page["nodes"] if n]
@@ -84,6 +85,12 @@ def list_projects(owner, is_org):
             break
         after = page["pageInfo"]["endCursor"]
     return nodes
+
+
+def list_repo_projects(owner, repo):
+    """List the Project v2 boards linked to THIS repo (paginated)."""
+    return _paginate_projects("$o:String!,$r:String!", "repository(owner:$o, name:$r)",
+                              "repository", {"o": owner, "r": repo})
 
 
 def get_project(owner, number, is_org):

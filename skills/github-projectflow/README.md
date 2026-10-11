@@ -20,7 +20,7 @@ Skill for managing the vibe-coding workflow with GitHub as the source of truth.
 
    ```bash
    python3 scripts/detect-board.py    # detect repo (user/org) & existing boards
-   python3 scripts/create-board.py --title "<name>"   # create board + description + README + link repo (idempotent)
+   python3 scripts/create-board.py --title "<name>"   # create board + description + README + link repo
    python3 scripts/create-status.py          # verify the Status field (board number from .github/projectflow.json)
    ```
 

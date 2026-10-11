@@ -2,10 +2,11 @@
 """create-board.py — Create a Project v2 board, set its description + README,
 link the repo, and ensure the Status field (Todo/In Progress/Done/Blocked) exists.
 
-Idempotent: if the board already exists, it is reused.
+Always creates a new board; it does not check for existing boards with the same name.
+Use --number to set up a board that already exists instead.
 
 Usage:
-  python3 scripts/create-board.py --title "My Board"   # create (or reuse) a board by name
+  python3 scripts/create-board.py --title "My Board"   # create a board
   python3 scripts/create-board.py --number 3           # use an existing board, skip create
 
 There is no default title: --title is required unless --number is given. When run
@@ -18,7 +19,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 from _common import (  # noqa: E402
-    REQUIRED_STATUSES, gh, gh_json, gh_text, repo_info, list_projects,
+    REQUIRED_STATUSES, gh, gh_json, gh_text, repo_info,
     get_project, ensure_status_field, save_config, require_gh,
 )
 
@@ -86,17 +87,11 @@ def main():
         proj, status_field = get_project(owner, number, is_org)
         print(f"Using existing board #{number}")
     else:
-        match = [p for p in list_projects(owner, is_org) if p["title"] == args.title]
-        if match:
-            number = match[0]["number"]
-            proj, status_field = get_project(owner, number, is_org)
-            print(f"Board '{args.title}' already exists (#{number}), skip create.")
-        else:
-            created = create_board(owner, is_org, args.title)
-            number = created["number"]
-            print(f"New board: #{number} — {created['url']}")
-            set_meta(created["id"], args.description, DEFAULT_README)
-            proj, status_field = get_project(owner, number, is_org)
+        created = create_board(owner, is_org, args.title)
+        number = created["number"]
+        print(f"New board: #{number} — {created['url']}")
+        set_meta(created["id"], args.description, DEFAULT_README)
+        proj, status_field = get_project(owner, number, is_org)
 
     # Link the repo to the board
     r = gh("project", "link", str(number), "--owner", owner, "--repo", f"{owner}/{repo}", check=False)
