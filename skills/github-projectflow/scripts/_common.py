@@ -1,4 +1,4 @@
-"""Shared helpers for the gh-projectflow scripts. Not an entry point."""
+"""Shared helpers for the github-projectflow scripts. Not an entry point."""
 import json
 import re
 import subprocess
@@ -6,8 +6,14 @@ import sys
 from pathlib import Path
 from shutil import which
 
-REQUIRED_STATUSES = ["Todo", "In Progress", "Done", "Blocked"]
-STATUS_COLORS = {"Todo": "GRAY", "In Progress": "YELLOW", "Done": "GREEN", "Blocked": "RED"}
+REQUIRED_STATUSES = ["Todo", "In Progress", "Need Review", "Done"]  # order matters
+STATUS_COLORS = {"Todo": "GRAY", "In Progress": "YELLOW", "Need Review": "ORANGE", "Done": "GREEN"}
+STATUS_DESCRIPTIONS = {
+    "Todo": "Not started yet",
+    "In Progress": "Being worked on by the agent",
+    "Need Review": "Waiting for Review By User",
+    "Done": "Reviewed and merged by the user",
+}
 CONFIG_FILE = ".github/projectflow.json"
 
 
@@ -120,29 +126,24 @@ def _option_literal(name, color, description=""):
 
 
 def ensure_status_field(project_id, status_field):
-    """Create the Status field, or add missing options while PRESERVING existing ones.
+    """Make the Status field have exactly REQUIRED_STATUSES, in order, with descriptions.
 
-    updateProjectV2Field replaces the whole option list, so existing options
-    must be re-sent together with the new ones.
+    Creates the field if missing. If it exists with different options (e.g. the
+    board defaults), the whole option list is replaced.
     """
+    opts = ",".join(_option_literal(s, STATUS_COLORS[s], STATUS_DESCRIPTIONS[s])
+                    for s in REQUIRED_STATUSES)
+    fragment = ("projectV2Field{ ... on ProjectV2SingleSelectField{ "
+                "id name options{ id name color description } } }")
     if status_field:
-        existing = status_field["options"]
-        have = {o["name"] for o in existing}
-        missing = [s for s in REQUIRED_STATUSES if s not in have]
-        if not missing:
+        if [o["name"] for o in status_field["options"]] == REQUIRED_STATUSES:
             return status_field
-        opts = [_option_literal(o["name"], o.get("color") or "GRAY", o.get("description") or "")
-                for o in existing]
-        opts += [_option_literal(s, STATUS_COLORS[s]) for s in missing]
         q = ("mutation($f:ID!){ updateProjectV2Field(input:{fieldId:$f, "
-             "singleSelectOptions:[" + ",".join(opts) + "]}){ projectV2Field{ "
-             "... on ProjectV2SingleSelectField{ id name options{ id name color description } } } } }")
+             "singleSelectOptions:[" + opts + "]}){ " + fragment + " } }")
         data = gh_json("api", "graphql", "-f", f"query={q}", "-f", f"f={status_field['id']}")
         return data["data"]["updateProjectV2Field"]["projectV2Field"]
-    opts = [_option_literal(s, STATUS_COLORS[s]) for s in REQUIRED_STATUSES]
     q = ("mutation($p:ID!){ createProjectV2Field(input:{projectId:$p, dataType:SINGLE_SELECT, "
-         'name:"Status", singleSelectOptions:[' + ",".join(opts) + "]}){ projectV2Field{ "
-         "... on ProjectV2SingleSelectField{ id name options{ id name color description } } } } }")
+         'name:"Status", singleSelectOptions:[' + opts + "]}){ " + fragment + " } }")
     data = gh_json("api", "graphql", "-f", f"query={q}", "-f", f"p={project_id}")
     return data["data"]["createProjectV2Field"]["projectV2Field"]
 

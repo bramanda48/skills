@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 """create-board.py — Create a Project v2 board, set its description + README,
-link the repo, and ensure the Status field (Todo/In Progress/Done/Blocked) exists.
+link the repo, and ensure the Status field (Todo/In Progress/Need Review/Done) exists.
 
 Always creates a new board; it does not check for existing boards with the same name.
-Use --number to set up a board that already exists instead.
 
 Usage:
-  python3 scripts/create-board.py --title "My Board"   # create a board
-  python3 scripts/create-board.py --number 3           # use an existing board, skip create
+  python3 scripts/create-board.py --title "My Board" --description "What this project is about"
 
-There is no default title: --title is required unless --number is given. When run
-in an interactive terminal without --title, the script asks for the name.
+There is no default title or description: --title and --description are required.
+The description should describe the project itself
+(generate it from AGENTS.md at the repo root or from the session context).
+When run in an interactive terminal without --title, the script asks for the name.
 """
 import argparse
 import json
@@ -23,7 +23,6 @@ from _common import (  # noqa: E402
     get_project, ensure_status_field, save_config, require_gh,
 )
 
-DEFAULT_DESC = "Plan & task management board for vibe coding: idea = draft, plan = issue, task = sub-issue."
 DEFAULT_README = """## How to Use This Board
 
 | Item | Meaning |
@@ -31,7 +30,7 @@ DEFAULT_README = """## How to Use This Board
 | Draft issue `[IDEA] ...` | A parked idea, not being worked on yet |
 | Issue labeled `plan` | An active plan (at most one `In Progress`) |
 | Sub-issue | A task from the plan's breakdown |
-| Status | `Todo` → `In Progress` → `Done`, or `Blocked` (a comment with the reason is required) |
+| Status | `Todo` → `In Progress` → `Need Review` (set by the agent) → `Done` (set manually by the user after merging the PR) |
 
 SOP: `projectflow: status` at the start of a session → work → auto-checkpoint after every finished task.
 """
@@ -62,50 +61,37 @@ def set_meta(project_id, description, readme):
 
 
 def main():
-    ap = argparse.ArgumentParser(description="Create/set up a Project v2 board for gh-projectflow")
-    ap.add_argument("--title", default=None,
-                    help="Board name (required unless --number is given)")
-    ap.add_argument("--description", default=DEFAULT_DESC)
-    ap.add_argument("--number", type=int, default=None,
-                    help="Use an existing board instead of creating one")
+    ap = argparse.ArgumentParser(description="Create/set up a Project v2 board for github-projectflow")
+    ap.add_argument("--title", default=None, help="Board name (required)")
+    ap.add_argument("--description", default=None, help="Short project description (required)")
     args = ap.parse_args()
 
-    if not args.number and not args.title:
-        if sys.stdin.isatty():
-            args.title = input("Board name: ").strip()
-        if not args.title:
-            ap.error("--title is required (ask the user what to name the board), "
-                     "or pass --number to use an existing board")
+    if not args.title and sys.stdin.isatty():
+        args.title = input("Board name: ").strip()
+    if not args.title:
+        ap.error("--title is required (ask the user what to name the board)")
+    if not args.description:
+        ap.error("--description is required: write a short description of the project "
+                 "(from AGENTS.md or the session context)")
 
     require_gh()
     info = repo_info()
     owner, repo, is_org = info["owner"], info["repo"], info["is_org"]
     print(f"Repo: {owner}/{repo} (org={is_org})")
 
-    if args.number:
-        number = args.number
-        proj, status_field = get_project(owner, number, is_org)
-        print(f"Using existing board #{number}")
-    else:
-        created = create_board(owner, is_org, args.title)
-        number = created["number"]
-        print(f"New board: #{number} — {created['url']}")
-        set_meta(created["id"], args.description, DEFAULT_README)
-        proj, status_field = get_project(owner, number, is_org)
+    created = create_board(owner, is_org, args.title)
+    number = created["number"]
+    print(f"New board: #{number} — {created['url']}")
+    set_meta(created["id"], args.description, DEFAULT_README)
+    proj, status_field = get_project(owner, number, is_org)
 
-    # Link the repo to the board
-    r = gh("project", "link", str(number), "--owner", owner, "--repo", f"{owner}/{repo}", check=False)
-    if r.returncode != 0:
-        print(f"WARN link repo: {r.stderr.strip()} (may already be linked)", file=sys.stderr)
-    else:
-        print(f"Repo {owner}/{repo} linked to board #{number}.")
+    # Link the repo to the board. A failure here is fatal so the real error is visible.
+    gh("project", "link", str(number), "--owner", owner, "--repo", f"{owner}/{repo}")
+    print(f"Repo {owner}/{repo} linked to board #{number}.")
 
-    # Ensure the Status field is complete (existing options are preserved)
+    # Set the Status field to exactly the required options (board defaults are replaced)
     ensure_status_field(proj["id"], status_field)
     print(f"Status field OK: {', '.join(REQUIRED_STATUSES)}")
-
-    print("NOTE: views cannot be created via the API. In the GitHub UI, add a 'Board' (kanban) "
-          "view grouped by Status if you want one.")
 
     print("\n=== SUMMARY ===")
     print(json.dumps({"owner": owner, "project_number": number,

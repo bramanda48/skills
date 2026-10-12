@@ -1,4 +1,4 @@
-# gh-projectflow
+# github-projectflow
 
 Skill for managing the vibe-coding workflow with GitHub as the source of truth.
 
@@ -7,7 +7,7 @@ Skill for managing the vibe-coding workflow with GitHub as the source of truth.
 - **IDEAS** → draft issues in a GitHub Project v2 board (invisible in the repo Issues tab)
 - **PLAN** → issue (labels: `plan`, `package: <name>`, assignee: @me)
 - **TASK** → sub-issue (labels: `task`, `package: <name>`, assignee: @me)
-- **STATUS** → board Status field: Todo / In Progress / Done / Blocked
+- **STATUS** → board Status field: Todo / In Progress / Need Review / Done
 - **STATE/CHECKPOINT** → uteke memory (skill `uteke-memory`)
 - **CANONICAL BOARD** → `.github/projectflow.json` in the repo (written by `create-board.py`, read by the other scripts)
 - **Branches & PRs** → skill `github-flow-branching`; commits → `conventional-commits`
@@ -20,7 +20,7 @@ Skill for managing the vibe-coding workflow with GitHub as the source of truth.
 
    ```bash
    python3 scripts/detect-board.py    # detect repo (user/org) & existing boards
-   python3 scripts/create-board.py --title "<name>"   # create board + description + README + link repo
+   python3 scripts/create-board.py --title "<name>" --description "<about the project>"   # create board + description + README + link repo
    python3 scripts/create-status.py          # verify the Status field (board number from .github/projectflow.json)
    ```
 
@@ -35,7 +35,6 @@ projectflow: park idea dark mode      # save an idea, stay focused
 projectflow: start plan export-csv    # issue + sub-issues + branch
 projectflow: convert idea dark mode   # draft → plan + task breakdown
 projectflow: checkpoint               # manual checkpoint
-projectflow: archive                  # plan finished
 ```
 
 ## Required companion skills

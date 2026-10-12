@@ -24,9 +24,20 @@ All paths below (`scripts/`, `templates/`) are relative to this skill's folder.
 Status is a **board field**, not an entity — but it is the contract every status change must follow, and the most error-prone part of the workflow:
 
 - Board: field **Status** on Project v2
-- Options (exactly these): `Todo` → `In Progress` → `Done`, plus `Blocked`
-- Every board item (draft, plan, task) MUST carry one of these statuses at all times
-- `Blocked` MUST come with a blocker comment on the issue
+- Options (exactly these, in this order): `Todo` → `In Progress` → `Need Review` → `Done`
+
+| Status | Meaning |
+| --- | --- |
+| `Todo` | Not started yet |
+| `In Progress` | Being worked on by the agent |
+| `Need Review` | Waiting for review by the user. Sub-issue: the task is finished. Plan: all sub-issues are `Need Review` and the Pull Request has been created |
+| `Done` | Reviewed and merged by the user |
+
+Rules:
+
+- Every board item (draft, plan, task) MUST carry one of these statuses at all times.
+- The agent only moves items up to `Need Review`. `Done` is set **manually by the user**; the agent never sets `Done`, never merges the PR, and never closes the plan issue.
+- A task the agent cannot finish stays `In Progress`.
 
 ## Labels & Assignment
 
@@ -68,9 +79,9 @@ gh issue create --title "PLAN: <title>" --assignee @me \
 1. **One active plan.** Session focus = one plan issue with Status `In Progress`. Everything else goes to draft ideas.
 2. **Park ideas, don't switch context.** When an idea pops up mid-session → create a draft issue, keep working on the active plan.
 3. **Auto-checkpoint (MANDATORY).** Every sub-issue status change → (a) update Status on the board, (b) store a checkpoint in uteke. Protection against network errors / out-of-tokens / session crashes.
-4. **One branch per plan** per `github-flow-branching`: descriptive branch off the default branch, push regularly, open PR, merge, delete branch. **Never commit directly to the default branch.**
+4. **One branch per plan** per `github-flow-branching`: descriptive branch off the default branch, push regularly, open one PR for the plan. The user merges it manually. **Never commit directly to the default branch.**
 5. **Commits follow `conventional-commits`** with a `Refs #<sub-issue-number>` footer for automatic linking.
-6. **Plan done** → all sub-issues `Done`, plan issue closed (`gh issue close`), PR merged per github-flow.
+6. **Plan ready for review** → all sub-issues `Need Review` → open the PR (per github-flow) → plan Status = `Need Review`. Merging and setting `Done` are the user's job.
 
 ## Setup & Detection (3 Python scripts, stdlib only)
 
@@ -80,7 +91,7 @@ Never assume user-level or org-level — scripts detect it via `gh repo view --j
 
 Run `scripts/detect-board.py` first, then follow the case that matches:
 
-1. **No board and no `.github/projectflow.json`** → `detect-board.py` finds no board → ask the user for the board name → `create-board.py --title "<name>"` → `create-status.py`.
+1. **No board and no `.github/projectflow.json`** → `detect-board.py` finds no board → ask the user for the board name, write the description from `AGENTS.md`/context → `create-board.py --title "<name>" --description "<about the project>"` → `create-status.py`.
 2. **Board exists and `.github/projectflow.json` exists** → `detect-board.py` confirms the board → done, nothing to create.
 3. **`.github/projectflow.json` exists but the board is gone or no longer linked to this repo** (`detect-board.py` warns about it) → delete the current `.github/projectflow.json` and run the setup again as in case 1.
 
@@ -95,15 +106,17 @@ JSON output: `owner`, `repo`, `is_org`, `config` (contents of `.github/projectfl
 ### 2. `scripts/create-board.py` — create/set up the board
 
 ```bash
-python3 scripts/create-board.py --title "My Board"   # always creates a new board
-python3 scripts/create-board.py --number 3           # use an existing board
+python3 scripts/create-board.py --title "My Board" --description "<what the project is about>"
 ```
 
-**There is no default board name.** During `projectflow: setup`, always ask the user what the board should be called (or whether to use an existing one) before running this script. `--title` is required unless `--number` is given.
+**There is no default board name or description.** During `projectflow: setup`:
 
-Does: create a new Project v2 (no check for existing boards with the same name) → set **short description** + **board README** → link the repo → ensure the Status field is complete (existing options are preserved) → write `.github/projectflow.json` (`owner` + `project_number`) to the repo (creating `.github/` if needed), marking this board as canonical.
+- Ask the user what the board should be called.
+- Write `--description` yourself: a short sentence about the project, generated from `AGENTS.md` at the repo root if present, otherwise from the session context. Never use generic filler text.
 
-Known limitation: views cannot be created through the GitHub API. If a kanban view grouped by Status is wanted, add it once in the GitHub UI. The board title is intentionally not stored — it can be renamed freely.
+`--title` and `--description` are required.
+
+Does: create a new Project v2 (no check for existing boards with the same name) → set **short description** + **board README** → link the repo → set the Status field to exactly `Todo`, `In Progress`, `Need Review`, `Done`, each with a description (board default options are replaced) → write `.github/projectflow.json` (`owner` + `project_number`) to the repo (creating `.github/` if needed), marking this board as canonical.
 
 ### 3. `scripts/create-status.py` — verify the status mapping
 
@@ -113,7 +126,7 @@ python3 scripts/create-status.py --number 3   # manual override
 python3 scripts/create-status.py --fix         # auto-fix
 ```
 
-Ensures the `Status` field has these options: `Todo`, `In Progress`, `Done`, `Blocked`. `--fix` adds missing options and keeps existing ones.
+Ensures the `Status` field has exactly these options, in this order: `Todo`, `In Progress`, `Need Review`, `Done`. `--fix` replaces the field's options with these (each with a description).
 
 ## Setting Status on a board item
 
@@ -180,14 +193,10 @@ Same as above, skip steps 1 and 5.
 
 1. Pick a sub-issue with Status `Todo` → set Status = `In Progress`.
 2. Implement → conventional commit with `Refs #<sub-issue>` footer, push.
-3. Sub-issue done → set Status = `Done` → **AUTO-CHECKPOINT**:
+3. Sub-issue done → set its Status = `Need Review` → **AUTO-CHECKPOINT**:
    - `uteke_remember`: type `procedure`, tags `["project:<repo>", "checkpoint"]`, content: active plan, branch, last commit, next step, gotchas.
    - Supersede the previous checkpoint for the same plan with `uteke_supersede` (never leave two active checkpoints).
-4. Blocked → Status = `Blocked` + `gh issue comment <n> --body "Blocker: ..."` (a Blocked item MUST carry a blocker comment).
-
-### Wrapping up a plan
-
-All sub-issues `Done` → `gh issue close <plan>` → merge the PR (github-flow) → supersede the uteke checkpoint → store important decisions in uteke (type `decision`, tag `project:<repo>`).
+4. All sub-issues are `Need Review` → open the plan's PR (github-flow) → set the plan's Status = `Need Review` → checkpoint. Stop there: the user merges and sets `Done`.
 
 ## Trigger Phrases
 
@@ -198,7 +207,6 @@ All sub-issues `Done` → `gh issue close <plan>` → merge the PR (github-flow)
 | `projectflow: start plan <X>` | Plan issue + sub-issues + branch (with `package:` label, assignee @me) |
 | `projectflow: convert idea <X>` | Draft → plan issue + task breakdown |
 | `projectflow: checkpoint` | Manual `uteke_remember` checkpoint (auto-checkpoint still runs) |
-| `projectflow: archive` | Close plan, wrap up uteke |
 | `projectflow: setup` | Run `scripts/detect-board.py` → `create-board.py` → `create-status.py` |
 
 ## Technical Notes

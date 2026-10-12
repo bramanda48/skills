@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""detect-board.py — Detect the GitHub repo & project boards for gh-projectflow.
+"""detect-board.py — Detect the GitHub repo & project boards for github-projectflow.
 
 Only boards linked to this repo are listed.
 

@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """create-status.py — Verify the board's status mapping: the `Status` field exists and has
-the options `Todo`, `In Progress`, `Done`, `Blocked`.
+exactly the options `Todo`, `In Progress`, `Need Review`, `Done` (in this order).
 
 Default: check & report (exit 0 = PASS, exit 1 = FAIL).
---fix: repair automatically (create the missing field/options; existing options are kept).
+--fix: repair automatically (create the field, or replace its options with the required ones).
 
 Usage:
   python3 scripts/create-status.py              # board number from .github/projectflow.json
@@ -50,17 +50,17 @@ def main():
         sys.exit(1)
 
     have = [o["name"] for o in status_field.get("options", [])]
-    missing = [s for s in REQUIRED_STATUSES if s not in have]
-    if missing:
-        print(f"FAIL: missing options: {', '.join(missing)} (found: {', '.join(have)})")
+    if have != REQUIRED_STATUSES:
+        print(f"FAIL: expected options (in order): {', '.join(REQUIRED_STATUSES)} "
+              f"(found: {', '.join(have)})")
         if args.fix:
             ensure_status_field(proj["id"], status_field)
-            print("FIXED: options added (existing options preserved).")
+            print("FIXED: options replaced.")
             return
         print(f"Fix: python3 scripts/create-status.py --number {args.number} --fix")
         sys.exit(1)
 
-    print(f"PASS: Status field complete → {', '.join(have)}")
+    print(f"PASS: Status field OK → {', '.join(have)}")
 
 
 if __name__ == "__main__":
